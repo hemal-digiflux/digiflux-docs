@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digiflux | PM & Tech Coordinators Alignment</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      /* Digiflux-inspired dark palette (tweak here if you change brand tones) */
+      --dfx-bg:#0a0f1a;         /* deep night */
+      --dfx-panel:#0f172a;      /* slate-900 */
+      --dfx-panel-2:#111827;    /* gray-900 */
+      --dfx-border:#1f2a44;     /* indigo-ish border */
+      --dfx-primary:#2563eb;    /* brand blue */
+      --dfx-primary-400:#60a5fa;/* lighter blue */
+      --dfx-cyan:#06b6d4;       /* accent cyan */
+      --dfx-lime:#84cc16;       /* success lime */
+      --dfx-text:#e5e7eb;       /* gray-200 */
+      --dfx-muted:#9ca3af;      /* gray-400 */
+      --dfx-card-shadow: 0 20px 60px rgba(0,0,0,.45), 0 2px 10px rgba(0,0,0,.4);
+    }
+    html,body{height:100%;}
+    body{
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 800px at 85% -10%, rgba(37,99,235,.25), transparent 40%),
+                  radial-gradient(900px 700px at -10% 120%, rgba(6,182,212,.20), transparent 45%),
+                  var(--dfx-bg);
+      color:var(--dfx-text);
+      overflow:hidden;
+    }
+    /* Slides */
+    .slide{position:absolute; inset:0; display:none; opacity:0; transform:translateY(20px) scale(.99); padding:3.5rem 2rem;}
+    .slide.active{display:flex; opacity:1; transform:translateY(0) scale(1);}    
+    .slide-inner{width:100%; max-width:1200px; margin:0 auto; background:linear-gradient(180deg, rgba(17,24,39,.7), rgba(17,24,39,.5)); backdrop-filter: blur(6px); border:1px solid var(--dfx-border); box-shadow:var(--dfx-card-shadow);}
+
+    /* Card chrome */
+    .card{border-radius:1.25rem;}
+    .title-gradient{background:linear-gradient(90deg, var(--dfx-primary) 0%, var(--dfx-cyan) 60%, var(--dfx-primary-400) 100%); -webkit-background-clip:text; background-clip:text; color:transparent;}
+
+    /* Tags */
+    .tag{padding:.25rem .6rem; border-radius:9999px; font-weight:700; font-size:.8rem; letter-spacing:.2px; border:1px solid rgba(255,255,255,.08)}
+    .tag-owner{background:rgba(37,99,235,.15); color:#cfe2ff; border-color:rgba(37,99,235,.45)}
+    .tag-resp{background:rgba(6,182,212,.15); color:#c7f9ff; border-color:rgba(6,182,212,.45)}
+    .tag-cons{background:rgba(124,58,237,.18); color:#e6d7ff; border-color:rgba(124,58,237,.45)}
+    .tag-info{background:rgba(148,163,184,.15); color:#e2e8f0; border-color:rgba(148,163,184,.35)}
+    .tag-supp{background:rgba(79,70,229,.18); color:#dfe2ff; border-color:rgba(79,70,229,.45)}
+
+    /* Scrollbar */
+    .table-wrap::-webkit-scrollbar{height:10px;width:10px}
+    .table-wrap::-webkit-scrollbar-thumb{background:#334155;border-radius:8px}
+    .table-wrap::-webkit-scrollbar-track{background:#0b1220}
+
+    /* Animations */
+    @keyframes fadeUp{0%{opacity:0;transform:translateY(12px) scale(.98)}100%{opacity:1;transform:translateY(0) scale(1)}}
+    @keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+    @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+    .animate-in{animation:fadeUp .6s ease-out both}
+    .breathing{animation:breathe 6s ease-in-out infinite}
+    .btn-shimmer{background-image:linear-gradient(90deg, rgba(255,255,255,.1) 0%, rgba(255,255,255,.35) 50%, rgba(255,255,255,.1) 100%); background-size:200% 100%}
+    .btn-shimmer:hover{animation:shimmer 1.5s linear infinite}
+
+    /* Progress bar */
+    #progressBar{position:fixed; left:0; right:0; top:0; height:4px; background:linear-gradient(90deg, var(--dfx-primary), var(--dfx-cyan)); transform-origin:left center; transform:scaleX(0)}
+
+    /* Floating orbs */
+    .orb{position:fixed; border-radius:9999px; filter:blur(18px); opacity:.18; pointer-events:none}
+    .orb-1{width:260px; height:260px; right:-60px; top:80px; background:radial-gradient(circle, #3b82f6 0%, transparent 65%)}
+    .orb-2{width:320px; height:320px; left:-80px; bottom:-40px; background:radial-gradient(circle, #06b6d4 0%, transparent 70%)}
+
+    /* Presenter helpers */
+    .kbd{border:1px solid #334155; padding:.2rem .4rem; border-radius:.5rem; background:#0b1220; color:#cbd5e1}
+  </style>
+</head>
+<body class="w-screen h-screen relative select-none">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div id="progressBar"></div>
+
+  <!-- NAV -->
+  <div class="fixed top-4 right-4 z-40 flex items-center gap-2">
+    <button id="gridBtn" title="Grid overview (G)" class="px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-sm">Grid</button>
+    <button id="autoBtn" title="Autoplay (A)" class="px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-sm">Autoplay</button>
+    <button id="darkBtn" title="Toggle dark variants (D)" class="px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-sm">Darker</button>
+  </div>
+
+  <!-- Counter -->
+  <div id="slideCounter" class="fixed bottom-4 left-4 z-40 px-3 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-semibold tracking-wide">1 / 11</div>
+
+  <!-- Controls -->
+  <div class="fixed bottom-4 right-4 z-40 flex gap-2">
+    <button id="prevBtn" class="p-3 rounded-full bg-[var(--dfx-primary)]/80 hover:bg-[var(--dfx-primary)] transition shadow-xl breathing" aria-label="Previous">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <button id="nextBtn" class="p-3 rounded-full bg-[var(--dfx-cyan)]/80 hover:bg-[var(--dfx-cyan)] transition shadow-xl breathing" aria-label="Next">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+  <!-- GRID OVERVIEW -->
+  <div id="grid" class="hidden fixed inset-0 z-30 bg-black/60 backdrop-blur-sm p-8 overflow-auto">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Thumbs will be inserted by JS -->
+    </div>
+  </div>
+
+  <!-- SLIDE 1 -->
+  <section id="slide-1" class="slide active items-center justify-center">
+    <div class="slide-inner card p-12 text-center animate-in">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs">Digiflux Alignment Meet</div>
+      <h1 class="mt-4 text-5xl md:text-6xl font-extrabold leading-tight title-gradient">PM & Tech Coordinators</h1>
+      <p class="mt-3 text-4xl font-extrabold text-[var(--dfx-primary-400)]">Alignment Meeting</p>
+      <p class="mt-4 text-lg text-[var(--dfx-muted)]">Clarifying Roles, Responsibilities, and Processes</p>
+      <div class="mt-8 flex items-center justify-center gap-3">
+        <span class="kbd">←</span><span class="text-sm text-[var(--dfx-muted)]">Prev</span>
+        <span class="kbd">→ / Space</span><span class="text-sm text-[var(--dfx-muted)]">Next</span>
+        <span class="kbd">G</span><span class="text-sm text-[var(--dfx-muted)]">Grid</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2: Agenda -->
+  <section id="slide-2" class="slide items-center justify-center">
+    <div class="slide-inner card p-10 animate-in">
+      <h2 class="text-center text-4xl font-extrabold mb-8 title-gradient">Meeting Agenda</h2>
+      <ol class="mx-auto max-w-3xl list-decimal list-inside space-y-3 text-lg">
+        <li>Clarification of Roles – PM & TCO</li>
+        <li>Clarification of Roles – PM, TCO & QA</li>
+        <li>Clarification of Roles – PM, TCO, QA & DevOps</li>
+        <li>Calendar Usage for Planning</li>
+        <li>Improving Professional & Team Behavior</li>
+        <li>Project Document – Overview and Structure</li>
+        <li>HR Responsibilities</li>
+        <li>Next Steps & Action Items</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- SLIDE 3: PM & TCO Roles -->
+  <section id="slide-3" class="slide items-start justify-center">
+    <div class="slide-inner card p-8 animate-in">
+      <h2 class="text-3xl font-extrabold text-center mb-2 title-gradient">Roles & Responsibilities: PM & TCO</h2>
+      <p class="text-center text-[var(--dfx-muted)] mb-6">Defining who leads, who supports, and areas of shared ownership.</p>
+      <div class="flex justify-center gap-2 mb-4 text-xs">
+        <span class="tag tag-owner">Owner</span>
+        <span class="tag tag-resp">Responsible</span>
+        <span class="tag tag-cons">Consulted</span>
+        <span class="tag tag-info">Informed</span>
+        <span class="tag tag-supp">Support</span>
+      </div>
+      <div class="table-wrap overflow-auto rounded-xl border border-[var(--dfx-border)]">
+        <table class="w-full text-left border-collapse">
+          <thead class="sticky top-0 bg-[var(--dfx-panel)]/95">
+            <tr class="border-b border-[var(--dfx-border)]">
+              <th class="p-4">Responsibility Area</th>
+              <th class="p-4">Project Manager</th>
+              <th class="p-4">Technical Coordinator</th>
+            </tr>
+          </thead>
+          <tbody class="bg-[var(--dfx-panel-2)]">
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Define project scope & goals</td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+              <td class="p-4"><span class="tag tag-cons">Consulted</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Prepare project plan & timeline</td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+              <td class="p-4"><span class="tag tag-cons">Consulted</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Stakeholder communication</td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+              <td class="p-4"><span class="tag tag-info">Informed</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Team coordination (overall)</td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+              <td class="p-4"><span class="tag tag-supp">Support</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Technical task assignment</td>
+              <td class="p-4"><span class="tag tag-info">Informed</span></td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Provide technical guidance</td>
+              <td class="p-4"><span class="tag tag-info">Informed</span></td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Code review & quality check</td>
+              <td class="p-4"><span class="tag tag-info">Informed</span></td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Risk identification & escalation</td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+              <td class="p-4"><span class="tag tag-cons">Consulted</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Deployment readiness</td>
+              <td class="p-4"><span class="tag tag-info">Informed</span></td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Ensure deliverables meet quality standards</td>
+              <td class="p-4"><span class="tag tag-owner">Owner</span></td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Resource Allocation</td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+              <td class="p-4"><span class="tag tag-cons">Consulted</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Time estimation management</td>
+              <td class="p-4"><span class="tag tag-owner">Owner</span></td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Retrospective call</td>
+              <td class="p-4"><span class="tag tag-owner">Owner</span></td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Documentation (Project & Technical)</td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Testing & QA Coordination</td>
+              <td class="p-4"><span class="tag tag-info">Informed</span></td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+            </tr>
+            <tr>
+              <td class="p-4">DevOps management</td>
+              <td class="p-4"><span class="tag tag-supp">Support</span></td>
+              <td class="p-4"><span class="tag tag-resp">Responsible</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: QA Included -->
+  <section id="slide-4" class="slide items-start justify-center">
+    <div class="slide-inner card p-8 animate-in">
+      <h2 class="text-3xl font-extrabold text-center mb-2 title-gradient">Expanding Roles: Including QA</h2>
+      <p class="text-center text-[var(--dfx-muted)] mb-6">Clarifying handover points and responsibilities with the Quality Assurance team.</p>
+      <div class="flex justify-center gap-2 mb-4 text-xs">
+        <span class="tag tag-owner">Owner (A)</span>
+        <span class="tag tag-resp">Responsible (R)</span>
+        <span class="tag tag-cons">Consulted (C)</span>
+        <span class="tag tag-info">Informed (I)</span>
+      </div>
+      <div class="table-wrap overflow-auto rounded-xl border border-[var(--dfx-border)]">
+        <table class="w-full text-left border-collapse">
+          <thead class="sticky top-0 bg-[var(--dfx-panel)]/95">
+            <tr class="border-b border-[var(--dfx-border)]">
+              <th class="p-4">Task Area</th>
+              <th class="p-4">Quality Assurance</th>
+              <th class="p-4">Technical Coordinator</th>
+              <th class="p-4">Project Manager</th>
+            </tr>
+          </thead>
+          <tbody class="bg-[var(--dfx-panel-2)]">
+            <tr class="border-b border-[var(--dfx-border)]"><td class="p-4 font-semibold" colspan="4">Flow: Dev → TCO/PM (basic checks) → QA → Manager</td></tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Requirement Analysis</td>
+              <td class="p-4"><span class="tag tag-resp">R</span></td>
+              <td class="p-4"><span class="tag tag-cons">C</span></td>
+              <td class="p-4"><span class="tag tag-owner">A</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Planning & Estimation</td>
+              <td class="p-4"><span class="tag tag-resp">R</span></td>
+              <td class="p-4"><span class="tag tag-cons">C</span></td>
+              <td class="p-4"><span class="tag tag-owner">A</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Development Support</td>
+              <td class="p-4"><span class="tag tag-cons">C</span></td>
+              <td class="p-4"><span class="tag tag-owner">A/R</span></td>
+              <td class="p-4"><span class="tag tag-info">I</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Test Planning</td>
+              <td class="p-4"><span class="tag tag-owner">A/R</span></td>
+              <td class="p-4"><span class="tag tag-cons">C</span></td>
+              <td class="p-4"><span class="tag tag-cons">C</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Defect Management</td>
+              <td class="p-4"><span class="tag tag-owner">A</span></td>
+              <td class="p-4"><span class="tag tag-resp">R</span></td>
+              <td class="p-4"><span class="tag tag-cons">C</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Release Readiness</td>
+              <td class="p-4"><span class="tag tag-cons">C</span></td>
+              <td class="p-4"><span class="tag tag-resp">R</span></td>
+              <td class="p-4"><span class="tag tag-owner">A</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Communication</td>
+              <td class="p-4"><span class="tag tag-info">I</span></td>
+              <td class="p-4"><span class="tag tag-cons">C</span></td>
+              <td class="p-4"><span class="tag tag-owner">A</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-4">Retrospective Calls</td>
+              <td class="p-4"><span class="tag tag-resp">R</span></td>
+              <td class="p-4"><span class="tag tag-resp">R</span> & <span class="tag tag-cons">C</span></td>
+              <td class="p-4"><span class="tag tag-owner">A</span></td>
+            </tr>
+            <tr>
+              <td class="p-4">Documentation</td>
+              <td class="p-4"><span class="tag tag-owner">A</span></td>
+              <td class="p-4"><span class="tag tag-owner">A</span></td>
+              <td class="p-4"><span class="tag tag-owner">A</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5: DevOps Included -->
+  <section id="slide-5" class="slide items-start justify-center">
+    <div class="slide-inner card p-8 animate-in">
+      <h2 class="text-3xl font-extrabold text-center mb-2 title-gradient">The Complete Picture: Including DevOps</h2>
+      <p class="text-center text-[var(--dfx-muted)] mb-6">Full role matrix covering infrastructure, deployment, CI/CD, and release.</p>
+      <div class="table-wrap overflow-auto rounded-xl border border-[var(--dfx-border)]">
+        <table class="w-full text-left border-collapse">
+          <thead class="sticky top-0 bg-[var(--dfx-panel)]/95">
+            <tr class="border-b border-[var(--dfx-border)]">
+              <th class="p-3">Task Area</th>
+              <th class="p-3">DevOps Engineer</th>
+              <th class="p-3">QA</th>
+              <th class="p-3">Technical Coordinator</th>
+              <th class="p-3">Project Manager</th>
+            </tr>
+          </thead>
+          <tbody class="bg-[var(--dfx-panel-2)]">
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-3">Infrastructure Setup</td>
+              <td class="p-3"><span class="tag tag-owner">Owner & Responsible</span></td>
+              <td class="p-3"><span class="tag tag-cons">Consulted</span></td>
+              <td class="p-3"><span class="tag tag-owner">Accountable/Owner</span></td>
+              <td class="p-3"><span class="tag tag-info">Informed</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-3">CI/CD Pipeline</td>
+              <td class="p-3"><span class="tag tag-owner">Owner & Responsible</span></td>
+              <td class="p-3">-</td>
+              <td class="p-3"><span class="tag tag-cons">Consulted</span></td>
+              <td class="p-3"><span class="tag tag-info">Informed</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-3">Monitoring & Alerts</td>
+              <td class="p-3"><span class="tag tag-owner">Owner & Responsible</span></td>
+              <td class="p-3">-</td>
+              <td class="p-3"><span class="tag tag-cons">Consulted</span></td>
+              <td class="p-3"><span class="tag tag-info">Informed</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-3">Deployment Management</td>
+              <td class="p-3"><span class="tag tag-owner">Owner & Responsible</span></td>
+              <td class="p-3"><span class="tag tag-cons">Consulted</span></td>
+              <td class="p-3"><span class="tag tag-owner">Accountable/Owner</span></td>
+              <td class="p-3"><span class="tag tag-cons">Consulted</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-3">Security & Compliance</td>
+              <td class="p-3"><span class="tag tag-owner">Owner & Responsible</span></td>
+              <td class="p-3"><span class="tag tag-cons">Consulted</span></td>
+              <td class="p-3"><span class="tag tag-cons">Consulted</span></td>
+              <td class="p-3"><span class="tag tag-info">Informed</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-3">Backup & Recovery</td>
+              <td class="p-3"><span class="tag tag-owner">Owner & Responsible</span></td>
+              <td class="p-3">-</td>
+              <td class="p-3"><span class="tag tag-cons">Consulted</span></td>
+              <td class="p-3"><span class="tag tag-info">Informed</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-3">Performance Optimization</td>
+              <td class="p-3"><span class="tag tag-owner">Owner & Responsible</span></td>
+              <td class="p-3"><span class="tag tag-cons">Consulted</span></td>
+              <td class="p-3"><span class="tag tag-cons">Consulted</span></td>
+              <td class="p-3"><span class="tag tag-info">Informed</span></td>
+            </tr>
+            <tr class="border-b border-[var(--dfx-border)]">
+              <td class="p-3">Release Readiness</td>
+              <td class="p-3"><span class="tag tag-resp">Responsible</span></td>
+              <td class="p-3"><span class="tag tag-cons">Consulted</span></td>
+              <td class="p-3"><span class="tag tag-owner">Accountable/Owner</span></td>
+              <td class="p-3"><span class="tag tag-owner">Owner</span></td>
+            </tr>
+            <tr>
+              <td class="p-3">Documentation</td>
+              <td class="p-3"><span class="tag tag-owner">Owner & Responsible</span></td>
+              <td class="p-3"><span class="tag tag-cons">Consulted</span></td>
+              <td class="p-3"><span class="tag tag-cons">Consulted</span></td>
+              <td class="p-3"><span class="tag tag-owner">Owner</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6: Calendar Usage -->
+  <section id="slide-6" class="slide items-center justify-center">
+    <div class="slide-inner card p-10 animate-in text-center">
+      <h2 class="text-4xl font-extrabold mb-6 title-gradient">Calendar Usage for Planning</h2>
+      <p class="text-xl text-[var(--dfx-text)] mb-8">Establish <span class="font-bold text-[var(--dfx-lime)]">strict use</span> of a shared calendar to track:</p>
+      <div class="grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto text-left">
+        <div class="p-5 rounded-xl border border-[var(--dfx-border)] bg-white/5">
+          <div class="text-[var(--dfx-lime)] text-2xl">✓</div>
+          <h3 class="mt-1 text-2xl font-semibold">Leave Plans</h3>
+          <p class="text-[var(--dfx-muted)]">For all developers and team members to ensure visibility.</p>
+        </div>
+        <div class="p-5 rounded-xl border border-[var(--dfx-border)] bg-white/5">
+          <div class="text-[var(--dfx-lime)] text-2xl">✓</div>
+          <h3 class="mt-1 text-2xl font-semibold">Work-From-Home (WFH)</h3>
+          <p class="text-[var(--dfx-muted)]">To coordinate and maintain team availability.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7: Team Behavior -->
+  <section id="slide-7" class="slide items-center justify-center">
+    <div class="slide-inner card p-10 animate-in text-center">
+      <h2 class="text-4xl font-extrabold mb-8 title-gradient">Improving Professional & Team Behavior</h2>
+      <div class="grid md:grid-cols-3 gap-8 text-left">
+        <div class="p-6 rounded-xl border border-[var(--dfx-border)] bg-white/5">
+          <h3 class="text-xl font-bold text-[var(--dfx-lime)] mb-2">Accountability</h3>
+          <p class="text-[var(--dfx-text)]/90">Promote accountability and professionalism in day-to-day work.</p>
+        </div>
+        <div class="p-6 rounded-xl border border-[var(--dfx-border)] bg-white/5">
+          <h3 class="text-xl font-bold text-amber-400 mb-2">Early Communication</h3>
+          <p class="text-[var(--dfx-text)]/90">Encourage early and clear communication of risks and blockers.</p>
+        </div>
+        <div class="p-6 rounded-xl border border-[var(--dfx-border)] bg-white/5">
+          <h3 class="text-xl font-bold text-violet-400 mb-2">Respect & Reliability</h3>
+          <p class="text-[var(--dfx-text)]/90">Respect working hours and commitments to improve delivery reliability.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8: Project Document Structure -->
+  <section id="slide-8" class="slide items-center justify-center">
+    <div class="slide-inner card p-10 animate-in">
+      <h2 class="text-4xl font-extrabold text-center mb-8 title-gradient">Project Document Structure</h2>
+      <div class="bg-white/5 p-6 rounded-xl border border-[var(--dfx-border)]">
+        <h3 class="text-2xl font-bold mb-4">Project Document (Master)</h3>
+        <ul class="list-disc list-inside space-y-3 text-lg pl-4">
+          <li><span class="font-semibold text-[var(--dfx-lime)]">Basic Details:</span> Key project info (name, scope, stakeholders).</li>
+          <li><span class="font-semibold text-[var(--dfx-lime)]">Project Sheets:</span> All related sheets & documents linked.</li>
+          <li><span class="font-semibold text-[var(--dfx-lime)]">DevOps Documentation:</span> Setup, workflow, and deployment details.</li>
+          <li><span class="font-semibold text-[var(--dfx-lime)]">Features:</span> Current features, new requests, and prioritization.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 9: HR Responsibilities -->
+  <section id="slide-9" class="slide items-center justify-center">
+    <div class="slide-inner card p-10 animate-in">
+      <h2 class="text-4xl font-extrabold text-center mb-8 title-gradient">HR Responsibilities</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+        <p class="border-l-4 border-[var(--dfx-primary)] pl-4">Leave & attendance tracking</p>
+        <p class="border-l-4 border-[var(--dfx-primary)] pl-4">Onboarding/offboarding process</p>
+        <p class="border-l-4 border-[var(--dfx-primary)] pl-4">Maintaining team behavior and work culture</p>
+        <p class="border-l-4 border-[var(--dfx-primary)] pl-4">Coordinating holidays and WFH requests</p>
+        <p class="border-l-4 border-[var(--dfx-primary)] pl-4 md:col-span-2">Addressing employee concerns and feedback</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 10: Next Steps -->
+  <section id="slide-10" class="slide items-center justify-center">
+    <div class="slide-inner card p-10 animate-in text-center">
+      <h2 class="text-4xl font-extrabold mb-8 title-gradient">Next Steps & Action Items</h2>
+      <div class="space-y-6 text-left mx-auto max-w-xl">
+        <div class="flex items-start gap-3">
+          <div class="flex-shrink-0 text-[var(--dfx-lime)] text-3xl mt-1">➔</div>
+          <div>
+            <h3 class="text-2xl font-semibold">Finalize Meetings</h3>
+            <p class="text-[var(--dfx-muted)]">Check who is ready for meetings with DevOps & QA.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="flex-shrink-0 text-[var(--dfx-lime)] text-3xl mt-1">➔</div>
+          <div>
+            <h3 class="text-2xl font-semibold">Create Documentation Format</h3>
+            <p class="text-[var(--dfx-muted)]">Prepare a high-level Technical Documentation format for all projects.</p>
+          </div>
+        </div>
+      </div>
+      <button id="cta" class="mt-8 px-6 py-3 rounded-xl bg-[var(--dfx-primary)]/90 hover:bg-[var(--dfx-primary)] text-white font-semibold shadow-xl btn-shimmer">Let’s Get Started</button>
+    </div>
+  </section>
+
+  <!-- SLIDE 11: Q&A -->
+  <section id="slide-11" class="slide items-center justify-center">
+    <div class="slide-inner card p-12 text-center animate-in">
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-4 title-gradient">Questions & Discussion</h1>
+      <p class="text-2xl text-[var(--dfx-text)]/90">Thank you!</p>
+    </div>
+  </section>
+
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    const total = slides.length;
+    let current = 1;
+    let autoplay = false;
+    let autoTimer = null;
+
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const slideCounter = document.getElementById('slideCounter');
+    const progressBar = document.getElementById('progressBar');
+    const grid = document.getElementById('grid');
+    const gridBtn = document.getElementById('gridBtn');
+    const autoBtn = document.getElementById('autoBtn');
+    const darkBtn = document.getElementById('darkBtn');
+
+    function showSlide(n){
+      slides.forEach(s=>s.classList.remove('active'));
+      const target = document.getElementById(`slide-${n}`);
+      if(target){
+        target.classList.add('active');
+        // re-trigger entrance animation
+        target.querySelector('.slide-inner')?.classList.add('animate-in');
+        setTimeout(()=>target.querySelector('.slide-inner')?.classList.remove('animate-in'), 650);
+      }
+      current = n;
+      slideCounter.textContent = `${n} / ${total}`;
+      prevBtn.disabled = (n===1);
+      nextBtn.disabled = (n===total);
+      progressBar.style.transform = `scaleX(${n/total})`;
+      // focus safety
+      nextBtn.blur(); prevBtn.blur();
+    }
+
+    function next(){ if(current < total){ showSlide(current+1); } }
+    function prev(){ if(current > 1){ showSlide(current-1); } }
+
+    prevBtn.addEventListener('click', prev);
+    nextBtn.addEventListener('click', next);
+
+    // Keyboard
+    document.addEventListener('keydown', (e)=>{
+      if(['ArrowRight',' '].includes(e.key)) next();
+      if(['ArrowLeft'].includes(e.key)) prev();
+      if(['g','G'].includes(e.key)) toggleGrid();
+      if(['a','A'].includes(e.key)) toggleAuto();
+      if(['d','D'].includes(e.key)) toggleDark();
+    });
+
+    // Autoplay
+    function toggleAuto(){
+      autoplay = !autoplay;
+      autoBtn.classList.toggle('bg-white/10', autoplay);
+      if(autoplay){
+        autoTimer = setInterval(()=>{
+          if(current >= total){ toggleAuto(); return; }
+          next();
+        }, 5000);
+      } else {
+        clearInterval(autoTimer);
+      }
+    }
+    autoBtn.addEventListener('click', toggleAuto);
+
+    // Grid overview
+    function toggleGrid(){
+      if(grid.classList.contains('hidden')){
+        const wrap = grid.querySelector('div.grid');
+        if(wrap && !wrap.dataset.init){
+          // build thumbs once
+          slides.forEach((s, idx)=>{
+            const n = idx+1;
+            const thumb = s.cloneNode(true);
+            thumb.id = `thumb-${n}`;
+            thumb.classList.remove('active');
+            thumb.classList.add('block');
+            thumb.querySelectorAll('#slideCounter, #prevBtn, #nextBtn').forEach(el=>el?.remove?.());
+            thumb.addEventListener('click', ()=>{ toggleGrid(); showSlide(n); })
+            wrap.appendChild(thumb);
+          });
+          wrap.dataset.init = '1';
+        }
+        grid.classList.remove('hidden');
+      } else {
+        grid.classList.add('hidden');
+      }
+    }
+    gridBtn.addEventListener('click', toggleGrid);
+
+    // Darker toggle (push background towards near-black)
+    function toggleDark(){
+      const root = document.documentElement;
+      const dark = getComputedStyle(document.body).getPropertyValue('--dfx-bg').trim();
+      const veryDark = '#060910';
+      root.style.setProperty('--dfx-bg', dark === veryDark ? '#0a0f1a' : veryDark);
+      darkBtn.classList.toggle('bg-white/10');
+    }
+    darkBtn.addEventListener('click', toggleDark);
+
+    // CTA subtle pulse
+    const cta = document.getElementById('cta');
+    if(cta){ setInterval(()=> cta.classList.toggle('btn-shimmer'), 1600); }
+
+    // Init
+    showSlide(current);
+  </script>
+</body>
+</html>
