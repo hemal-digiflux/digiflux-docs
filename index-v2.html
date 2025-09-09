@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PM & Tech Coordinators Alignment Meeting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000; /* Black background */
+            background-image: radial-gradient(circle at top right, rgb(139, 92, 246, 0.1) 0%, transparent 50%),
+                              radial-gradient(circle at bottom left, rgb(217, 70, 239, 0.1) 0%, transparent 50%);
+            color: #E2E8F0; /* Slate-200 */
+            overflow: hidden;
+        }
+        .slide {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none; /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            flex-direction: column;
+        }
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+            display: flex; /* Shown when active */
+        }
+        .gradient-text {
+            background-image: linear-gradient(to right, #f87171, #fb923c, #fbbf24, #a3e635, #4ade80, #34d399, #22d3ee, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .table-cell-tag {
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+        .tag-responsible { background-color: #06B6D4; color: #ffffff; } /* Cyan-500 */
+        .tag-owner { background-color: #D946EF; color: #ffffff; } /* Fuchsia-500 */
+        .tag-consulted { background-color: #8B5CF6; color: #ffffff; } /* Violet-500 */
+        .tag-informed { background-color: #64748B; color: #ffffff; } /* Slate-500 */
+        .tag-support { background-color: #4338CA; color: #ffffff; } /* Indigo-700 */
+
+        .card {
+            background-color: rgba(5, 10, 20, 0.6); /* Darker Slate with opacity */
+            border: 1px solid #334155; /* Slate-700 */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 0 50px rgba(139, 92, 246, 0.15);
+        }
+
+        /* Custom Scrollbar for tables */
+        .table-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .table-container::-webkit-scrollbar-track {
+            background: #1e293b; /* Slate-800 */
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background: #475569; /* Slate-600 */
+            border-radius: 4px;
+        }
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #64748B; /* Slate-500 */
+        }
+    </style>
+</head>
+<body class="w-screen h-screen flex items-center justify-center relative">
+
+    <!-- Slide 1: Title -->
+    <div id="slide-1" class="slide active text-center">
+        <div class="card p-12 rounded-2xl">
+            <h1 class="text-5xl font-bold text-slate-100 mb-4">PM & Tech Coordinators</h1>
+            <h2 class="text-6xl font-extrabold mb-6 gradient-text bg-gradient-to-r from-fuchsia-500 via-violet-500 to-cyan-400">Alignment Meeting</h2>
+            <p class="text-xl text-slate-300">Clarifying Roles, Responsibilities, and Processes</p>
+        </div>
+    </div>
+
+    <!-- Slide 2: Agenda -->
+    <div id="slide-2" class="slide">
+        <div class="w-full max-w-4xl card p-8 rounded-2xl">
+            <h2 class="text-4xl font-bold text-center mb-8 gradient-text bg-gradient-to-r from-fuchsia-500 to-cyan-400">Meeting Agenda</h2>
+            <ol class="list-decimal list-inside space-y-3 text-lg text-slate-200">
+                <li>Definition of Terms</li>
+                <li>Roles & Responsibilities: PM & TCO</li>
+                <li>Roles & Responsibilities: Including QA</li>
+                <li>Roles & Responsibilities: Including DevOps</li>
+                <li>Challenges & Discussion Points</li>
+                <li>Real-time Incident Examples</li>
+                <li>Immediate & Regular Action Checks</li>
+                <li>Calendar Usage, Team Behavior & Project Docs</li>
+                <li>HR Responsibilities</li>
+                <li>Next Steps & Action Items</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Slide 3: Definitions -->
+    <div id="slide-3" class="slide">
+        <div class="w-full max-w-4xl card p-10 rounded-2xl text-center">
+            <h2 class="text-4xl font-bold mb-8 gradient-text bg-gradient-to-r from-fuchsia-500 to-cyan-400">Definition of Terms</h2>
+            <div class="grid md:grid-cols-2 gap-6 text-left">
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                    <h3 class="text-xl font-bold text-fuchsia-400 mb-2">Owner / Accountable</h3>
+                    <p class="text-slate-300">The individual who is ultimately answerable for the correct and thorough completion of the task. They hold final responsibility and sign-off.</p>
+                </div>
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                    <h3 class="text-xl font-bold text-cyan-400 mb-2">Responsible</h3>
+                    <p class="text-slate-300">The person or people who do the work to complete the task. There is at least one Responsible role, though others can be delegated to for assistance.</p>
+                </div>
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                    <h3 class="text-xl font-bold text-violet-400 mb-2">Consulted</h3>
+                    <p class="text-slate-300">Individuals who provide input, suggestions, or expertise. This is a two-way communication.</p>
+                </div>
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                    <h3 class="text-xl font-bold text-slate-400 mb-2">Informed</h3>
+                    <p class="text-slate-300">People who are kept up-to-date on progress but are not directly involved in the work. This is typically a one-way communication.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: PM & TCO Roles -->
+    <div id="slide-4" class="slide">
+        <div class="w-full max-w-6xl card p-8 rounded-2xl">
+            <h2 class="text-3xl font-bold text-center mb-2 gradient-text bg-gradient-to-r from-fuchsia-500 to-cyan-400">Roles & Responsibilities: PM & TCO</h2>
+            <p class="text-center text-slate-400 mb-6">Defining who leads, who supports, and areas of shared ownership.</p>
+            <div class="flex justify-center space-x-4 mb-6">
+                <span class="table-cell-tag tag-owner">✅ Owner</span>
+                <span class="table-cell-tag tag-responsible">✅ Responsible</span>
+                <span class="table-cell-tag tag-consulted">🔹 Consulted</span>
+                <span class="table-cell-tag tag-informed">🔹 Informed</span>
+                <span class="table-cell-tag tag-support">🔹 Support</span>
+            </div>
+            <div class="table-container overflow-auto max-h-[65vh]">
+                <table class="w-full text-left border-collapse">
+                    <thead class="sticky top-0 bg-slate-900/80 backdrop-blur-sm">
+                        <tr class="border-b border-slate-700">
+                            <th class="p-4 text-lg text-slate-100">Responsibility Area</th>
+                            <th class="p-4 text-lg text-slate-100">Project Manager</th>
+                            <th class="p-4 text-lg text-slate-100">Technical Coordinator</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-slate-900">
+                        <tr class="border-b border-slate-800"><td class="p-4">Define project scope & goals</td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td><td class="p-4"><span class="table-cell-tag tag-consulted">Consulted</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-4">Prepare project plan & timeline</td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td><td class="p-4"><span class="table-cell-tag tag-consulted">Consulted</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-4">Stakeholder communication</td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td><td class="p-4"><span class="table-cell-tag tag-informed">Informed</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-4">Team coordination (overall)</td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td><td class="p-4"><span class="table-cell-tag tag-support">Support</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-4">Technical task assignment</td><td class="p-4"><span class="table-cell-tag tag-informed">Informed</span></td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-4">Provide technical guidance</td><td class="p-4"><span class="table-cell-tag tag-informed">Informed</span></td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-4">Mentoring Dev Team</td><td class="p-4"><span class="table-cell-tag tag-informed">Informed</span></td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-4">Code review & quality check</td><td class="p-4"><span class="table-cell-tag tag-informed">Informed</span></td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-4">Risk identification & escalation</td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td><td class="p-4"><span class="table-cell-tag tag-consulted">Consulted</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-4">Deployment readiness</td><td class="p-4"><span class="table-cell-tag tag-informed">Informed</span></td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-4">Ensure deliverables meet quality standards</td><td class="p-4"><span class="table-cell-tag tag-owner">Owner</span></td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-4">Resource Allocation</td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td><td class="p-4"><span class="table-cell-tag tag-consulted">Consulted</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-4">Time estimation management</td><td class="p-4"><span class="table-cell-tag tag-owner">Owner</span></td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-4">Retrospective call</td><td class="p-4"><span class="table-cell-tag tag-owner">Owner</span></td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-4">Documentation (Project & Technical)</td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-4">Testing & QA Coordination</td><td class="p-4"><span class="table-cell-tag tag-informed">Informed</span></td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td></tr>
+                        <tr><td class="p-4">DevOps management</td><td class="p-4"><span class="table-cell-tag tag-support">Support</span></td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: PM, TCO, QA Roles -->
+    <div id="slide-5" class="slide">
+        <div class="w-full max-w-6xl card p-8 rounded-2xl">
+            <h2 class="text-3xl font-bold text-center mb-2 gradient-text bg-gradient-to-r from-fuchsia-500 to-cyan-400">Expanding Roles: Including QA</h2>
+            <p class="text-center text-slate-400 mb-6">Clarifying QA responsibilities and authority.</p>
+            <div class="table-container overflow-auto max-h-[55vh]">
+                <table class="w-full text-left border-collapse">
+                    <thead class="sticky top-0 bg-slate-900/80 backdrop-blur-sm">
+                        <tr class="border-b border-slate-700">
+                            <th class="p-4 text-slate-100">Task Area</th>
+                            <th class="p-4 text-slate-100">Quality Assurance</th>
+                            <th class="p-4 text-slate-100">Technical Coordinator</th>
+                            <th class="p-4 text-slate-100">Project Manager</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-slate-900">
+                        <tr class="border-b border-slate-800"><td class="p-4 font-semibold text-cyan-400" colspan="4">Flow: Dev → TCO/PM (Code review & Basic check) → QA → Manager</td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-4">Requirement Analysis</td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible (R)</span></td><td class="p-4"><span class="table-cell-tag tag-consulted">Consulted (C)</span></td><td class="p-4"><span class="table-cell-tag tag-owner">Owner (A)</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-4">Planning & Estimation</td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible (R)</span></td><td class="p-4"><span class="table-cell-tag tag-consulted">Consulted (C)</span></td><td class="p-4"><span class="table-cell-tag tag-owner">Owner (A)</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-4">Development Support</td><td class="p-4"><span class="table-cell-tag tag-consulted">Consulted (C)</span></td><td class="p-4"><span class="table-cell-tag tag-owner">Owner/Responsible (A/R)</span></td><td class="p-4"><span class="table-cell-tag tag-informed">Informed (I)</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-4">Test Planning</td><td class="p-4"><span class="table-cell-tag tag-owner">Owner/Responsible (A/R)</span></td><td class="p-4"><span class="table-cell-tag tag-consulted">Consulted (C)</span></td><td class="p-4"><span class="table-cell-tag tag-consulted">Consulted (C)</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-4">Defect Management</td><td class="p-4"><span class="table-cell-tag tag-owner">Owner (A)</span></td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible (R)</span></td><td class="p-4"><span class="table-cell-tag tag-consulted">Consulted (C)</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-4">Release Readiness</td><td class="p-4"><span class="table-cell-tag tag-consulted">Consulted (C)</span></td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible (R)</span></td><td class="p-4"><span class="table-cell-tag tag-owner">Owner (A)</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-4">Communication</td><td class="p-4"><span class="table-cell-tag tag-informed">Informed (I)</span></td><td class="p-4"><span class="table-cell-tag tag-consulted">Consulted (C)</span></td><td class="p-4"><span class="table-cell-tag tag-owner">Owner (A)</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-4">Retrospective Calls</td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible (R)</span></td><td class="p-4"><span class="table-cell-tag tag-responsible">Responsible</span> & <span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-4"><span class="table-cell-tag tag-owner">Owner (A)</span></td></tr>
+                        <tr><td class="p-4">Documentation</td><td class="p-4"><span class="table-cell-tag tag-owner">Owner (A)</span></td><td class="p-4"><span class="table-cell-tag tag-owner">Owner (A)</span></td><td class="p-4"><span class="table-cell-tag tag-owner">Owner (A)</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-6 bg-slate-900 p-4 rounded-xl border border-slate-700">
+                <h3 class="font-bold text-lg text-fuchsia-400">Key QA Authority: Blocking a Release</h3>
+                <p class="text-slate-300 mt-2">QA holds the authority to block a release if critical or blocker bugs are found that violate acceptance criteria. This decision must be communicated immediately with a clear impact analysis. The PM is accountable for the final go/no-go decision after consulting with QA and TCO.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: All Roles (PM, TCO, QA, DevOps) -->
+    <div id="slide-6" class="slide">
+        <div class="w-full max-w-7xl card p-8 rounded-2xl">
+            <h2 class="text-3xl font-bold text-center mb-2 gradient-text bg-gradient-to-r from-fuchsia-500 to-cyan-400">The Complete Picture: Including DevOps</h2>
+            <p class="text-center text-slate-400 mb-6">Full role matrix covering infrastructure, deployment, CI/CD, and release.</p>
+            <div class="table-container overflow-auto max-h-[70vh]">
+                <table class="w-full text-left border-collapse">
+                    <thead class="sticky top-0 bg-slate-900/80 backdrop-blur-sm">
+                        <tr class="border-b border-slate-700">
+                            <th class="p-3 text-slate-100">Task Area</th><th class="p-3 text-slate-100">DevOps Engineer</th><th class="p-3 text-slate-100">QA</th><th class="p-3 text-slate-100">Technical Coordinator</th><th class="p-3 text-slate-100">Project Manager</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-slate-900">
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-3">Infrastructure Setup</td><td class="p-3"><span class="table-cell-tag tag-owner">Owner & Responsible</span></td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-3"><span class="table-cell-tag tag-owner">Accountable/Owner</span></td><td class="p-3"><span class="table-cell-tag tag-informed">Informed</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-3">CI/CD Pipeline</td><td class="p-3"><span class="table-cell-tag tag-owner">Owner & Responsible</span></td><td class="p-3">-</td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-3"><span class="table-cell-tag tag-informed">Informed</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-3">Monitoring & Alerts</td><td class="p-3"><span class="table-cell-tag tag-owner">Owner & Responsible</span></td><td class="p-3">-</td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-3"><span class="table-cell-tag tag-informed">Informed</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-3">Deployment Management</td><td class="p-3"><span class="table-cell-tag tag-owner">Owner & Responsible</span></td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-3"><span class="table-cell-tag tag-owner">Accountable/Owner</span></td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-3">Security & Compliance</td><td class="p-3"><span class="table-cell-tag tag-owner">Owner & Responsible</span></td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-3"><span class="table-cell-tag tag-informed">Informed</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-3">Backup & Recovery</td><td class="p-3"><span class="table-cell-tag tag-owner">Owner & Responsible</span></td><td class="p-3">-</td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-3"><span class="table-cell-tag tag-informed">Informed</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-3">Backup Validations & Redundancy</td><td class="p-3"><span class="table-cell-tag tag-owner">Owner & Responsible</span></td><td class="p-3"><span class="table-cell-tag tag-informed">Informed</span></td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-3"><span class="table-cell-tag tag-informed">Informed</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-3">Cost Optimization</td><td class="p-3"><span class="table-cell-tag tag-owner">Owner & Responsible</span></td><td class="p-3"><span class="table-cell-tag tag-informed">Informed</span></td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-3"><span class="table-cell-tag tag-owner">Accountable</span></td></tr>
+                        <tr class="border-b border-slate-800 bg-slate-800/50"><td class="p-3">Performance Optimization</td><td class="p-3"><span class="table-cell-tag tag-owner">Owner & Responsible</span></td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-3"><span class="table-cell-tag tag-informed">Informed</span></td></tr>
+                        <tr class="border-b border-slate-800"><td class="p-3">Release Readiness</td><td class="p-3"><span class="table-cell-tag tag-responsible">Responsible</span></td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-3"><span class="table-cell-tag tag-owner">Accountable/Owner</span></td><td class="p-3"><span class="table-cell-tag tag-owner">Owner</span></td></tr>
+                        <tr><td class="p-3">Documentation</td><td class="p-3"><span class="table-cell-tag tag-owner">Owner & Responsible</span></td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-3"><span class="table-cell-tag tag-consulted">Consulted</span></td><td class="p-3"><span class="table-cell-tag tag-owner">Owner</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slide 7: Challenges -->
+    <div id="slide-7" class="slide">
+        <div class="w-full max-w-3xl card p-10 rounded-2xl text-center">
+            <h2 class="text-4xl font-bold mb-8 gradient-text bg-gradient-to-r from-fuchsia-500 to-cyan-400">Challenges & Discussion</h2>
+            <div class="space-y-6 text-left mx-auto max-w-lg">
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                     <h3 class="text-2xl font-semibold text-white">Defining Boundaries: TCO vs. DevOps</h3>
+                     <p class="text-slate-400 mt-2">Where does the TCO's responsibility for deployment readiness end and DevOps' ownership of the pipeline begin? Let's discuss views on scripting, environment configuration, and troubleshooting handoffs.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Real-time Incident Examples -->
+    <div id="slide-8" class="slide">
+        <div class="w-full max-w-4xl card p-10 rounded-2xl text-center">
+            <h2 class="text-4xl font-bold mb-8 gradient-text bg-gradient-to-r from-fuchsia-500 to-cyan-400">Real-time Incident Examples</h2>
+            <div class="grid md:grid-cols-2 gap-8 text-left">
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                    <h3 class="text-xl font-bold text-cyan-400 mb-2">Scenario 1: Production Bug</h3>
+                    <p class="text-slate-300"><b class="text-white">Issue:</b> A critical payment feature fails in production. <br><b class="text-white">Response:</b> <b class="text-fuchsia-400">PM</b> owns communication with stakeholders. <b class="text-cyan-400">TCO</b> is responsible for technical triage and coordinating the dev fix. <b class="text-violet-400">DevOps</b> is consulted for logs and potential rollback. <b class="text-slate-400">QA</b> is informed and prepares for hotfix validation.</p>
+                </div>
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                    <h3 class="text-xl font-bold text-violet-400 mb-2">Scenario 2: Deployment Failure</h3>
+                    <p class="text-slate-300"><b class="text-white">Issue:</b> CI/CD pipeline fails during a release. <br><b class="text-white">Response:</b> <b class="text-fuchsia-400">DevOps</b> owns the pipeline investigation and fix. <b class="text-cyan-400">TCO</b> is consulted to check if the issue is code-related. <b class="text-violet-400">PM</b> is responsible for deciding whether to proceed or delay the release and informs stakeholders.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slide 9: Immediate & Regular Action Checks -->
+    <div id="slide-9" class="slide">
+        <div class="w-full max-w-3xl card p-10 rounded-2xl">
+            <h2 class="text-4xl font-bold text-center mb-8 gradient-text bg-gradient-to-r from-fuchsia-500 to-cyan-400">Immediate & Regular Action Checks</h2>
+            <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                <ul class="list-disc list-inside space-y-3 text-lg text-slate-300 pl-4">
+                    <li>Time log updates (daily) - Goal: Automate.</li>
+                    <li>Check team availability, especially with upcoming holidays.</li>
+                    <li>Do you have a clear project roadmap for the next few months?</li>
+                    <li>Are developers fully utilized? Identify and address challenges.</li>
+                    <li>Are any team celebrations or recognitions pending?</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Calendar Usage -->
+    <div id="slide-10" class="slide">
+        <div class="w-full max-w-3xl card p-10 rounded-2xl text-center">
+            <h2 class="text-4xl font-bold mb-6 gradient-text bg-gradient-to-r from-fuchsia-500 to-cyan-400">Calendar Usage for Planning</h2>
+            <p class="text-xl text-slate-300 mb-8">Establish <span class="font-bold text-amber-400">strict use</span> of a shared calendar to track:</p>
+            <div class="space-y-6 text-left mx-auto max-w-md">
+                <div class="flex items-start space-x-4"><div class="flex-shrink-0 text-cyan-400 text-3xl mt-1">✓</div><div><h3 class="text-2xl font-semibold text-slate-100">Leave Plans</h3><p class="text-slate-400">For all developers and team members to ensure visibility.</p></div></div>
+                <div class="flex items-start space-x-4"><div class="flex-shrink-0 text-cyan-400 text-3xl mt-1">✓</div><div><h3 class="text-2xl font-semibold text-slate-100">Work-From-Home (WFH)</h3><p class="text-slate-400">To coordinate and maintain team availability.</p></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11: Team Behavior -->
+    <div id="slide-11" class="slide">
+        <div class="w-full max-w-4xl card p-10 rounded-2xl text-center">
+            <h2 class="text-4xl font-bold mb-8 gradient-text bg-gradient-to-r from-fuchsia-500 to-cyan-400">Improving Professional & Team Behavior</h2>
+            <div class="grid md:grid-cols-3 gap-8 text-left">
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700"><h3 class="text-xl font-bold text-cyan-400 mb-2">Accountability</h3><p class="text-slate-300">Promote accountability and professionalism in day-to-day work.</p></div>
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700"><h3 class="text-xl font-bold text-fuchsia-400 mb-2">Early Communication</h3><p class="text-slate-300">Encourage early and clear communication of risks and blockers.</p></div>
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700"><h3 class="text-xl font-bold text-violet-400 mb-2">Respect & Reliability</h3><p class="text-slate-300">Respect working hours and commitments to improve delivery reliability.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Project Document Structure -->
+    <div id="slide-12" class="slide">
+        <div class="w-full max-w-3xl card p-10 rounded-2xl">
+            <h2 class="text-4xl font-bold text-center mb-8 gradient-text bg-gradient-to-r from-fuchsia-500 to-cyan-400">Project Document Structure</h2>
+            <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                <h3 class="text-2xl font-bold text-white mb-4">Project Document (Master)</h3>
+                <ul class="list-disc list-inside space-y-3 text-lg text-slate-300 pl-4">
+                    <li><span class="font-semibold text-cyan-400">Basic Details:</span> Key project info (name, scope, stakeholders).</li>
+                    <li><span class="font-semibold text-cyan-400">Project Sheets:</span> All related sheets & documents linked.</li>
+                    <li><span class="font-semibold text-cyan-400">DevOps Documentation:</span> Setup, workflow, and deployment details.</li>
+                    <li><span class="font-semibold text-cyan-400">Features:</span> Current features, new requests, and prioritization.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slide 13: HR Responsibilities -->
+    <div id="slide-13" class="slide">
+        <div class="w-full max-w-4xl card p-10 rounded-2xl">
+            <h2 class="text-4xl font-bold text-center mb-8 gradient-text bg-gradient-to-r from-fuchsia-500 to-cyan-400">HR Responsibilities</h2>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 text-lg text-slate-200">
+                <p class="border-l-4 border-fuchsia-500 pl-4">Leave & attendance tracking</p>
+                <p class="border-l-4 border-fuchsia-500 pl-4">Onboarding/offboarding process</p>
+                <p class="border-l-4 border-fuchsia-500 pl-4">Maintaining team behavior and work culture</p>
+                <p class="border-l-4 border-fuchsia-500 pl-4">Coordinating holidays and WFH requests</p>
+                <p class="border-l-4 border-fuchsia-500 pl-4 col-span-1 md:col-span-2">Addressing employee concerns and feedback</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 14: Next Steps -->
+    <div id="slide-14" class="slide">
+        <div class="w-full max-w-3xl card p-10 rounded-2xl text-center">
+            <h2 class="text-4xl font-bold mb-8 gradient-text bg-gradient-to-r from-fuchsia-500 to-cyan-400">Next Steps & Action Items</h2>
+            <div class="space-y-6 text-left mx-auto max-w-lg">
+                <div class="flex items-start space-x-4"><div class="flex-shrink-0 text-cyan-400 text-3xl mt-1">➔</div><div><h3 class="text-2xl font-semibold text-white">Finalize Meetings</h3><p class="text-slate-400">Check who is ready for meetings with DevOps & QA.</p></div></div>
+                <div class="flex items-start space-x-4"><div class="flex-shrink-0 text-cyan-400 text-3xl mt-1">➔</div><div><h3 class="text-2xl font-semibold text-white">Create Documentation Format</h3><p class="text-slate-400">Prepare a high-level Technical Documentation format for all projects.</p></div></div>
+            </div>
+        </div>
+    </div>
+    
+     <!-- Slide 15: Q&A -->
+    <div id="slide-15" class="slide text-center">
+        <div class="card p-12 rounded-2xl">
+            <h1 class="text-6xl font-bold mb-6 gradient-text bg-gradient-to-r from-fuchsia-500 via-violet-500 to-cyan-400">Questions & Discussion</h1>
+            <p class="text-2xl text-slate-300">Thank you!</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="fixed bottom-4 right-4 flex space-x-3 z-10">
+        <button id="prevBtn" class="bg-gradient-to-br from-fuchsia-600 to-violet-600 hover:from-fuchsia-700 hover:to-violet-700 text-white font-bold py-3 px-5 rounded-full shadow-lg shadow-violet-500/20 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        </button>
+        <button id="nextBtn" class="bg-gradient-to-br from-fuchsia-600 to-violet-600 hover:from-fuchsia-700 hover:to-violet-700 text-white font-bold py-3 px-5 rounded-full shadow-lg shadow-violet-500/20 transition-all transform hover:scale-105">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+        </button>
+    </div>
+    
+    <!-- Slide Counter -->
+    <div id="slideCounter" class="fixed bottom-4 left-4 bg-slate-800/50 border border-slate-700 text-slate-300 text-sm font-semibold py-2 px-4 rounded-full shadow-lg z-10">
+        1 / 15
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 15; // Updated total slides
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideCounter = document.getElementById('slideCounter');
+
+        function showSlide(n) {
+            // Hide all slides
+            document.querySelectorAll('.slide').forEach(slide => {
+                slide.classList.remove('active');
+            });
+
+            // Show the target slide
+            const targetSlide = document.getElementById(`slide-${n}`);
+            if (targetSlide) {
+                targetSlide.classList.add('active');
+            }
+
+            // Update counter
+            slideCounter.textContent = `${n} / ${totalSlides}`;
+            
+            // Update button states
+            prevBtn.disabled = n === 1;
+            nextBtn.disabled = n === totalSlides;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Event Listeners for buttons
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight' || event.key === ' ') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Initial setup
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
+
